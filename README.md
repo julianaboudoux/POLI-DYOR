@@ -18,3 +18,7 @@ Conseguimos agrupar objetos ao clicar em um dos objetos a ser agrupado, pression
 
 
 
+https://github.com/user-attachments/assets/fb94a37d-234b-4087-af4c-0f824bf3a1f8
+
+
+
