@@ -51,6 +51,7 @@ O tipo da joint será “revolute” para todas. A colocação das joints no cen
 6. Clicamos em "Apply to selection"
 
 Obs 1: o tamanho da joint geramente não impacta no funcionamento, então podemos apenas criar num tamanho que faça sentindo para nosso robô.
+
 Obs 2: quando necessário, devemos fazer uma rotação na joit para que ela fique na posição correta (vertical ou horizontal).
 
 Demonstração no vídeo abaixo:
