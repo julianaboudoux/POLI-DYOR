@@ -65,6 +65,21 @@ Após todas as joints serem posicionadas, o objeto deve-se parecer com a seguint
 
 ![image](https://github.com/user-attachments/assets/3818624d-dd0b-4cc7-91dd-8ddc93178169)
 
+Agora vamos configurar as propriedades das joints:
+
+As duas joints das rodas laterais devem ser colocadas em modo "velocity":
+
+![image](https://github.com/user-attachments/assets/b4e65513-e040-45f6-b3cb-1395615b8842)
+
+As joints do suporte da "castor wheel" e da "castor wheel" em so devem ser colocadas em modo "free":
+
+![image](https://github.com/user-attachments/assets/732d445f-5365-4585-a40a-ff9e331bbb11)
+
+As joints dos braços devem ser colocadas no modo "position":
+
+![image](https://github.com/user-attachments/assets/4aceed3f-2146-446c-802d-0a20457d2a07)
+
+
 
 
 
