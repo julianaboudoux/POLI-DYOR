@@ -35,5 +35,38 @@ Clicaremos em "Engine Properties" e no código que surgirá, devemos buscar pela
 
 ### 3. Colocação e configuração das joints
 
+O nosso robô terá 6 joints.
+
+- Uma horizontal para para cada roda (3 no total).
+- Uma vertical para cada braço (2 no total).
+- Uma vertical para o suporte da castor wheel.
+
+O tipo da joint será “revolute” para todas. A colocação das joints no centro dos objetos é feita do seguinte modo:
+
+1. Clicamos na joint
+2. Pressionamos a telca SHIFT
+3. Cicamos no objeto que terá a joint acoplada
+4. Clicamos no simbolo de "Object Shift"
+5. Na caixa de texto que abriu, selecionamos a aba "position"
+6. Clicamos em "Apply to selection"
+
+Obs 1: o tamanho da joint geramente não impacta no funcionamento, então podemos apenas criar num tamanho que faça sentindo para nosso robô.
+Obs 2: quando necessário, devemos fazer uma rotação na joit para que ela fique na posição correta (vertical ou horizontal).
+
+Demonstração no vídeo abaixo:
+
+https://github.com/user-attachments/assets/b96c4580-49b3-435f-8826-128e3b391080
+
+Para as joints nos braços, devemos criar um objeto temporário, que deverá ser apagado depois. Esse objeto nos ajudará a centralizar as joints dos braços. Devemos criar esses objetos para ambos os lados do robô, e após posicionar as joints, vamos apagá-los.
+
+![image](https://github.com/user-attachments/assets/76609c7d-8123-4d5c-bcd3-1c2950434484)
+
+Após todas as joints serem posicionadas, o objeto deve-se parecer com a seguinte imagem:
+
+![image](https://github.com/user-attachments/assets/3818624d-dd0b-4cc7-91dd-8ddc93178169)
+
+
+
+
 
 
