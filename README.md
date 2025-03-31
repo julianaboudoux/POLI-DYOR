@@ -1,10 +1,83 @@
 # Do Your Own Robot (DYOR)
 
-Descrição do projeto blablablablabla
+Projeto DYOR – Robô Autônomo Inteligente
+DYOR é um robô autônomo modelado na IDE CoppeliaSim, projetado para navegação inteligente, exploração e interação com o ambiente. Equipado com sensores LiDAR, ultrassônicos e câmeras, ele utiliza SLAM para mapear e evitar obstáculos, além de IA e machine learning para otimizar seus movimentos.
 
-### 0. Imporando arquivos
+Com rodas omnidirecionais ou esteiras, DYOR adapta-se a diferentes terrenos e pode ser usado para exploração, monitoramento e assistência. 
 
-### 1. 
+DYOR se destaca como um robô versátil, simulável no CoppeliaSim, e ideal para pesquisa, inovação e aplicações no mundo real. 
+
+### 0. Importando Arquivos 
+
+Em primeiro ponto temos que importar os "mesh's" já baixados na descrição do vídeo para importação no coppelia.
+Segue o link em anexo: https://www.youtube.com/redirect?event=video_description&redir_token=QUFFLUhqbHFVVW9pWVZIQWpEMWpkel9SS2l1Wk5BS3RPQXxBQ3Jtc0tsdkN2NXdPaFAzSEtNdnhPZGRncHEzZGhMYkJVZVNfUXpodVBmc0MyNGJmdElmSml3MU9LTkFrVWw5NVVtSWZpc3NwRWdGTFRkVF81Z0t0dE1HODB5RVpGdXVtX2dreDdOZ0xlMi1ILW9xTFhwbUlvbw&q=https%3A%2F%2Froboticafacil.es%2Fcoppeliasim%2Fdyor%2Fdyor_coppeliasim_files.zip&v=jiIJFaTblhY
+
+Na plataforma, teremos que realizar a importação da seguinte forma: 
+Ao chegar nessa tela, seguiremos os seguintes passos:
+Clicamos em "file", "import" e em "mesh". E assim, selecionamos o diretório onde estão localizadas os seguintes componentes que você deseja importar.
+![alt text](image-1.png)
+
+Após isso, para agilizar o processo, podemos importar todos de uma só vez. Lembrando apenas de realizar as seguintes alterações localizadas no vídeo, que no caso, são:
+![alt text](image-2.png)
+
+As seguintes orientações do vídeo são: 
+Colocar na escala de milímetros os elementos que serão importados, deixando a escala em "0.001" e logo em seguida formatar o eixo de orientação como Z, o "up-vector".
+![alt text](image-3.png)
+
+Logo em seguida teremos o robô importado como "mesh", mas não como objetos puros:
+![alt text](image-4.png)
+
+E com isso você pode ajustar as nomenclaturas dos componentes conforme desejado.
+
+Como vimos anteriormente, também é possível mudar a cor dos objetos conforme necessário: 
+Nessa altura, os passos são conhecidos, mas segue as telas abaixo após clicar no componente.
+
+![alt text](image-5.png)
+
+Para importar componentes especiais, devemos realizar o "load model", como por exemplo o led_matrix, que também teve o download realizado: 
+![alt text](image-6.png)
+![alt text](image-7.png)
+
+Logo após a importação do led, falta apenas ajustar ele com a frente do robô:
+
+![alt text](image-8.png)
+
+Pronto, Está feito. :D
+
+
+### 1. Transformando os objetos importados em "objetos puros"
+
+Como era de se esperar, o "mesh" é formado por um conjunto de formas geométricas, nesse caso, de triângulos. 
+Para realizar a transformação em objetos puros, seguiremos o seguinte esquema: 
+Selecionaremos o objeto desejado e logo em seguida na opção "Toggle Shape"
+![alt text](image-9.png)
+
+Fica mais fácil a visualização se colocarmos objeto em outro layer: 
+Por exemplo: 
+![alt text](image-10.png)
+
+Realizando o processo, temos o seguinte: 
+![alt text](image-11.png)
+
+Agora, apertando a tecla "shift" e selecionando a quantidade de triângulos desejados, extrairemos a forma desejada, seja ela um "cuboid", um cilidro, ou até se possível, uma esfera.
+![alt text](image-12.png)
+
+Após a seleção, teremos: 
+![alt text](image-13.png)
+
+E podemos extrair a forma desejada. 
+Para isso, transformaremos ele em um objeto "dynamic and responsable" conforme a opção selecionada:
+![alt text](image-15.png)
+
+Com o objeto extraído, podemos movê-lo para outra layer, onde ficará melhor o manuseio e realizar as devidas alterações. Faremos isso para todo o robô.
+![alt text](image-14.png)
+
+Um pequeno adendo ao importar os componentes de suporte da roda, para ficar igual no vídeo, como ele não mostra, selecione manualmente com a tecla Ctrl os 3 triângulos da base.
+Eles são mostrados a seguir:
+![alt text](image-16.png)
+Pronto, agora é só realizar para o outro lado, para parte superior do suporte e depois veremos como unir esses elementos mais à frente. 
+Obrigado :D - Aline Soares, Caio Victor, Lucas Muniz.
+
 
 ### 2. Agrupamento dos objetos e propriedade das rodas
 
