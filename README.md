@@ -186,7 +186,15 @@ Já para a "caster_wheel" coloque o valor '0.1066'.
 
 ### 5. Explicação do código do robô manual (incluíndo LED).
 
+Nesse momento, iremos analisar o códido que fará nosso robô se movimentar de maneiras diferentes. Iremos usar a linguagem Lua. Primeiro, precisamos adicionar o script no nosso robo. clique com o botao direito no "Robot", e siga o caminho na imagem a seguir, criando um script sem Threads em Lua.
+
+![image](https://github.com/user-attachments/assets/0a1302c7-2d0b-4f0a-8fa2-fdf7ac713b7c)
+
+Esse script deve aparecer no final da hierarquia de cenas, dentro do objeto "Robot", como a seguir. Dê dois cliques com o botao esquerdo para abrir o scrpit
+
+![image](https://github.com/user-attachments/assets/16d5d8f1-ffe6-4bd9-8212-01c21d5c80e9)
 
 
 
+![image](https://github.com/user-attachments/assets/d29f9cdb-453a-4737-abf0-3a97b7be3f92)
 
