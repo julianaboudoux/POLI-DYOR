@@ -85,7 +85,7 @@ Vamos agrupar algumas os seguintes objetos puros recém extraídos do nosso rob�
 
 - Parte de baixo dos braços com a parte de cima dos braços (fazemos isso para os dois braços) -> Formando um braço direito e um braço esquerdo.
 - A base horizontal com a base vertical do robô -> Formando um objeto que será base tanto vertical quanto horizontal do robô.
-- As três partes (objetos puros) do suporte da “castor wheel” (roda da frente) do robô -> Formando um suporte da "castor wheel". 
+- As três partes (objetos puros) do suporte da “caster wheel” (roda da frente) do robô -> Formando um suporte da "caster wheel". 
 
 Conseguimos agrupar objetos ao clicar em um dos objetos a ser agrupado, pressionar a tecla SHIFT e, enquanto pressionamos a tecla, clicamos no outro objeto a ser agrupado.
 
@@ -112,7 +112,7 @@ O nosso robô terá 6 joints.
 
 - Uma horizontal para para cada roda (3 no total).
 - Uma vertical para cada braço (2 no total).
-- Uma vertical para o suporte da castor wheel.
+- Uma vertical para o suporte da caster wheel.
 
 O tipo da joint será “revolute” para todas. A colocação das joints no centro dos objetos é feita do seguinte modo:
 
@@ -145,7 +145,7 @@ As duas joints das rodas laterais devem ser colocadas em modo "velocity":
 
 ![image](https://github.com/user-attachments/assets/b4e65513-e040-45f6-b3cb-1395615b8842)
 
-As joints do suporte da "castor wheel" e da "castor wheel" em so devem ser colocadas em modo "free":
+As joints do suporte da "caster wheel" e da "caster wheel" em so devem ser colocadas em modo "free":
 
 ![image](https://github.com/user-attachments/assets/732d445f-5365-4585-a40a-ff9e331bbb11)
 
@@ -154,6 +154,22 @@ As joints dos braços devem ser colocadas no modo "position":
 ![image](https://github.com/user-attachments/assets/4aceed3f-2146-446c-802d-0a20457d2a07)
 
 
+### 4. Hierarquia e configuração da massa de objetos (debugging massa). 
+
+Após a configuração das joints e dos objetos puros, iremos fazer a hierarquia de cena necessária para o funcionamento correto do nosso robô.
+Primeiro, vamos configurar as "caster wheel". Os objetos puros sempre estarão como "filho" da joint e o objeto original, como a seguir:
+
+
+![image](https://github.com/user-attachments/assets/a424c88b-48d2-4307-b9c7-c95ee5be794d)![image](https://github.com/user-attachments/assets/aa5f36e4-4026-4271-b0f2-77f5419c0c16)
+
+
+
+
+![image](https://github.com/user-attachments/assets/84a0d9ab-7c3f-425c-bc61-8ee639a4ee7f)
+
+
+
+### 5. Explicação do código do robô manual (incluíndo LED).
 
 
 
