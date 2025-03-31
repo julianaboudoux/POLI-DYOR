@@ -407,3 +407,185 @@ function sysCall_cleanup()
     -- do some clean-up here
 end
 ```
+
+Agora, iremos fazer e analisar o código da matriz de led. Abra o script da "led_matrix" ![image](https://github.com/user-attachments/assets/f390dbd1-6763-4706-8114-ceeddea7fd8e)
+Criaremos uma interface gráfica com botões para a exibição visual das expressões em tempo real utilizando cor vermelha nos LEDs acesos. A matriz é 8x8, manipulada via código Lua. Faremos as expressões a seguir:
+
+Happy (Feliz)
+Sad (Triste)
+Angry (Bravo)
+Love (Apaixonado)
+Off (Desliga a matriz)
+
+
+Vamos definir as funções a serem utilizadas na UI. lshift e rshift são usadas para converter inteiros em sequências binárias e controlar os LEDs individualmente. As expressões são vetores com 8 inteiros, cadda uma de uma maneira
+
+```
+local function lshift(x)
+  return x * 2
+end
+
+local function rshift(x)
+  return math.floor(x / 2)
+end
+
+function onOff()
+setExpression({0,0,0,0,0,0,0,0})
+end
+
+function onHappy()
+setExpression({48,24,12,12,12,12,24,48})
+end
+
+function onSad()
+setExpression({12,24,48,48,48,48,24,12})
+end
+
+function onLove()
+setExpression({48,120,124,62,62,124,120,48})
+end
+
+function onAngry()
+setExpression({64,34,36,8,8,36,34,64})
+end
+```
+
+A função principal de renderização itera por cada linha e coluna da matriz, converte os valores decimais em binário e acende ou apaga os LEDs de acordo com o bit correspondente.
+
+```
+function setExpression(values)
+    for i=1,8,1 do
+      value=values[i]
+      for j=1,8,1 do
+        local rv=value%2
+        if (rv>0) then
+            sim.setShapeColor(leds[j][i],NULL,sim.colorcomponent_emission,led_on_color)
+        else
+            sim.setShapeColor(leds[j][i],NULL,sim.colorcomponent_emission,led_off_color)
+        end
+        value=rshift(value)
+      end
+    end
+end
+
+```
+
+A inicialição sysCall_init() define as cores dos LEDs: vermelho ligado e preto desligado. Também monta a matriz bidimensional leds[i][j] para facilitar acesso e controle. A UI é criada usando simUI com layout de grade (grid) e posicionamento fixo na tela:
+
+```
+function sysCall_init()
+    -- do some initialization here
+    led_matrix=sim.getObjectHandle('led_matrix')
+    leds={};
+    led_off_color={0,0,0}
+    led_on_color={1,0,0}
+    for i=1,8,1 do
+        leds[i]={}
+      for j=1,8,1 do
+        leds[i][j]=sim.getObjectHandle('led' .. i .. '_' .. j)
+        sim.setShapeColor(leds[i][j],NULL,sim.colorcomponent_emission ,led_off_color)
+      end
+    end
+    ui=simUI.create('<ui enabled="true" modal="false" title="LED Matrix" closeable="true" resizable="false" layout="grid" placement="relative" position="20,420"><button enabled="true" text="Off" on-click="onOff"></button><button enabled="true" text="Happy" on-click="onHappy"></button><button enabled="true" text="Sad" on-click="onSad"></button><button enabled="true" text="Angry" on-click="onAngry"></button><button enabled="true" text="Love" on-click="onLove"></button></ui>')
+end
+```
+
+Ao finalizar a simulação, todos os LEDs são desligados (cor preta) no sysCall_cleanup()
+
+```
+function sysCall_cleanup()
+    -- do some clean-up here
+    for i=1,8,1 do
+        leds[i]={}
+      for j=1,8,1 do
+        leds[i][j]=sim.getObjectHandle('led' .. i .. '_' .. j)
+        sim.setShapeColor(leds[i][j],NULL,sim.colorcomponent_emission,led_off_color)
+      end
+    end
+end
+```
+
+Aqui segue o código completo:
+
+```
+local function lshift(x)
+  return x * 2
+end
+
+local function rshift(x)
+  return math.floor(x / 2)
+end
+
+function onOff()
+setExpression({0,0,0,0,0,0,0,0})
+end
+
+function onHappy()
+setExpression({48,24,12,12,12,12,24,48})
+end
+
+function onSad()
+setExpression({12,24,48,48,48,48,24,12})
+end
+
+function onLove()
+setExpression({48,120,124,62,62,124,120,48})
+end
+
+function onAngry()
+setExpression({64,34,36,8,8,36,34,64})
+end
+
+function sysCall_init()
+    -- do some initialization here
+    led_matrix=sim.getObjectHandle('led_matrix')
+    leds={};
+    led_off_color={0,0,0}
+    led_on_color={1,0,0}
+    for i=1,8,1 do
+        leds[i]={}
+      for j=1,8,1 do
+        leds[i][j]=sim.getObjectHandle('led' .. i .. '_' .. j)
+        sim.setShapeColor(leds[i][j],NULL,sim.colorcomponent_emission ,led_off_color)
+      end
+    end
+    ui=simUI.create('<ui enabled="true" modal="false" title="LED Matrix" closeable="true" resizable="false" layout="grid" placement="relative" position="20,420"><button enabled="true" text="Off" on-click="onOff"></button><button enabled="true" text="Happy" on-click="onHappy"></button><button enabled="true" text="Sad" on-click="onSad"></button><button enabled="true" text="Angry" on-click="onAngry"></button><button enabled="true" text="Love" on-click="onLove"></button></ui>')
+end
+
+function sysCall_actuation()
+    -- put your actuation code here
+    
+end
+
+function sysCall_sensing()
+    -- put your sensing code here
+end
+
+function sysCall_cleanup()
+    -- do some clean-up here
+    for i=1,8,1 do
+        leds[i]={}
+      for j=1,8,1 do
+        leds[i][j]=sim.getObjectHandle('led' .. i .. '_' .. j)
+        sim.setShapeColor(leds[i][j],NULL,sim.colorcomponent_emission,led_off_color)
+      end
+    end
+end
+
+function setExpression(values)
+    for i=1,8,1 do
+      value=values[i]
+      for j=1,8,1 do
+        local rv=value%2
+        if (rv>0) then
+            sim.setShapeColor(leds[j][i],NULL,sim.colorcomponent_emission,led_on_color)
+        else
+            sim.setShapeColor(leds[j][i],NULL,sim.colorcomponent_emission,led_off_color)
+        end
+        value=rshift(value)
+      end
+    end
+end
+
+-- See the user manual or the available code snippets for additional callback functions and details
+```
