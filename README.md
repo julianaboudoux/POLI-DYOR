@@ -15,32 +15,32 @@ Segue o link em anexo: https://www.youtube.com/redirect?event=video_description&
 Na plataforma, teremos que realizar a importação da seguinte forma: 
 Ao chegar nessa tela, seguiremos os seguintes passos:
 Clicamos em "file", "import" e em "mesh". E assim, selecionamos o diretório onde estão localizadas os seguintes componentes que você deseja importar.
-![alt text](image-1.png)
+![image](https://github.com/user-attachments/assets/61bb5a06-dfd2-4898-b158-d3be83f7c21f)
 
 Após isso, para agilizar o processo, podemos importar todos de uma só vez. Lembrando apenas de realizar as seguintes alterações localizadas no vídeo, que no caso, são:
-![alt text](image-2.png)
+![image](https://github.com/user-attachments/assets/cd2a6615-5ea5-4e24-aee4-d7e030b426c7)
 
 As seguintes orientações do vídeo são: 
 Colocar na escala de milímetros os elementos que serão importados, deixando a escala em "0.001" e logo em seguida formatar o eixo de orientação como Z, o "up-vector".
-![alt text](image-3.png)
+![image](https://github.com/user-attachments/assets/ac4914d2-8aac-42fd-8702-cf762b487e67)
 
 Logo em seguida teremos o robô importado como "mesh", mas não como objetos puros:
-![alt text](image-4.png)
+![image](https://github.com/user-attachments/assets/dbf9e6fb-18f1-4ee4-bbc5-10e18bc09064)
 
 E com isso você pode ajustar as nomenclaturas dos componentes conforme desejado.
 
 Como vimos anteriormente, também é possível mudar a cor dos objetos conforme necessário: 
 Nessa altura, os passos são conhecidos, mas segue as telas abaixo após clicar no componente.
 
-![alt text](image-5.png)
+![image](https://github.com/user-attachments/assets/2c1b8146-0ee0-435d-a8fe-665299128675)
 
 Para importar componentes especiais, devemos realizar o "load model", como por exemplo o led_matrix, que também teve o download realizado: 
-![alt text](image-6.png)
-![alt text](image-7.png)
+![image](https://github.com/user-attachments/assets/fe5cef95-08d3-45b3-ac3b-f14922650ed3)
+![image](https://github.com/user-attachments/assets/6f918fad-c125-4cd9-875f-d2dbd1ec07d1)
 
 Logo após a importação do led, falta apenas ajustar ele com a frente do robô:
 
-![alt text](image-8.png)
+![image](https://github.com/user-attachments/assets/66974a23-72ec-4d89-8733-7e5059271b2e)
 
 Pronto, Está feito. :D
 
@@ -50,31 +50,31 @@ Pronto, Está feito. :D
 Como era de se esperar, o "mesh" é formado por um conjunto de formas geométricas, nesse caso, de triângulos. 
 Para realizar a transformação em objetos puros, seguiremos o seguinte esquema: 
 Selecionaremos o objeto desejado e logo em seguida na opção "Toggle Shape"
-![alt text](image-9.png)
+![image](https://github.com/user-attachments/assets/be6ee260-bcc9-4b65-9230-3c500b7b0773)
 
 Fica mais fácil a visualização se colocarmos objeto em outro layer: 
 Por exemplo: 
-![alt text](image-10.png)
+![image](https://github.com/user-attachments/assets/c0d51320-6f4c-465a-973a-481d2e0d6880)
 
 Realizando o processo, temos o seguinte: 
-![alt text](image-11.png)
+![image](https://github.com/user-attachments/assets/01ea40f8-6e00-4e4d-9d5a-b7c07cb4c4f2)
 
 Agora, apertando a tecla "shift" e selecionando a quantidade de triângulos desejados, extrairemos a forma desejada, seja ela um "cuboid", um cilidro, ou até se possível, uma esfera.
-![alt text](image-12.png)
+![image](https://github.com/user-attachments/assets/e86523e8-d955-4d72-9081-bfedc8e36bca)
 
 Após a seleção, teremos: 
-![alt text](image-13.png)
+![image](https://github.com/user-attachments/assets/c64ca661-8ee0-4890-a055-38d230efc9fd)
 
 E podemos extrair a forma desejada. 
 Para isso, transformaremos ele em um objeto "dynamic and responsable" conforme a opção selecionada:
-![alt text](image-15.png)
+![image](https://github.com/user-attachments/assets/5d797527-ddf8-4395-820b-d018a3ce3bfa)
 
 Com o objeto extraído, podemos movê-lo para outra layer, onde ficará melhor o manuseio e realizar as devidas alterações. Faremos isso para todo o robô.
-![alt text](image-14.png)
+![image](https://github.com/user-attachments/assets/c9493e13-737f-4a27-9a3f-776bc7cd0172)
 
 Um pequeno adendo ao importar os componentes de suporte da roda, para ficar igual no vídeo, como ele não mostra, selecione manualmente com a tecla Ctrl os 3 triângulos da base.
 Eles são mostrados a seguir:
-![alt text](image-16.png)
+![image](https://github.com/user-attachments/assets/1d607107-e0e4-4258-9dd7-14a59cd65260)
 Pronto, agora é só realizar para o outro lado, para parte superior do suporte e depois veremos como unir esses elementos mais à frente. 
 Obrigado :D - Aline Soares, Caio Victor, Lucas Muniz.
 
