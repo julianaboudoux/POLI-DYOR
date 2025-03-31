@@ -186,15 +186,224 @@ Já para a "caster_wheel" coloque o valor '0.1066'.
 
 ### 5. Explicação do código do robô manual (incluíndo LED).
 
-Nesse momento, iremos analisar o códido que fará nosso robô se movimentar de maneiras diferentes. Iremos usar a linguagem Lua. Primeiro, precisamos adicionar o script no nosso robo. clique com o botao direito no "Robot", e siga o caminho na imagem a seguir, criando um script sem Threads em Lua.
+Nesse momento, iremos analisar o códido que fará nosso robô se movimentar de maneiras diferentes. Iremos usar a linguagem Lua. Primeiro, precisamos adicionar o script no nosso robo. clique com o botao direito no "Robot", e siga o caminho na imagem a seguir, criando um script sem Threads em Lua. O código consiste em:
+
+- Controle de velocidade linear e angular por sliders.
+- Comando para abrir/fechar a garra do robô.
+- Botões de movimento: Frente, Ré, Esquerda, Direita e Parar.
+- Interface interativa criada via simUI.
 
 ![image](https://github.com/user-attachments/assets/0a1302c7-2d0b-4f0a-8fa2-fdf7ac713b7c)
 
-Esse script deve aparecer no final da hierarquia de cenas, dentro do objeto "Robot", como a seguir. Dê dois cliques com o botao esquerdo para abrir o scrpit
+Esse script deve aparecer no final da hierarquia de cenas, dentro do objeto "Robot", como a seguir. ![image](https://github.com/user-attachments/assets/16d5d8f1-ffe6-4bd9-8212-01c21d5c80e9)
 
-![image](https://github.com/user-attachments/assets/16d5d8f1-ffe6-4bd9-8212-01c21d5c80e9)
+Dê dois cliques com o botao esquerdo para abrir o script.
 
+![image](https://github.com/user-attachments/assets/eddd1998-4e01-497c-a764-f088b8647cca)
 
+Para começar o código em si, vamos à função SysCall_init(). Essa função é a primeira a ser executada quando começamos a simulação. Temos abaixo as variáveis equivalentes aos dois braços e às duas rodas laterais. Em seguida, definimos parâmetros que serão usados futuramente. esses são: raio da roda, velocidade máxima e giro, a distância entre rodas e a velocidade e giro inicias.
 
-![image](https://github.com/user-attachments/assets/d29f9cdb-453a-4737-abf0-3a97b7be3f92)
+```
+function sysCall_init()
+    left_arm=sim.getObjectHandle('left_arm_joint')
+    right_arm=sim.getObjectHandle('right_arm_joint')
+    left_wheel=sim.getObjectHandle('left_joint')
+    right_wheel=sim.getObjectHandle('right_joint')
+    wheel_radius=0.03
+    max_speed=0.03
+    max_turn=0.3
+    speed=0
+    turn=0
+    b=0.0565
+    gripper_open=false
+end
+```
 
+Para a movimentação em si, vamos começar com a função "move", que irá fazer o cálculo de movimento diferencial (velocidade linear e angular), sendo v = velocidade linear, w = velocidade angular, b = metade da distância entre rodas e wheel_radius = raio das rodas. É criada fora do SysCall_init().
+
+```
+function move(v,w)
+    sim.setJointTargetVelocity(left_wheel,(v-b*w)/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,(v+b*w)/wheel_radius)
+end
+```
+
+Essa função será chamada nas funções "onSpeedChange" e "onTurnChange", que por si serão chamadas na UI que vamos fazer em seguida. "onSpeedChange" calcula a nova velocidade real: speed = newValue * max_speed / 100 e "onTurnChange" Calcula a nova velocidade angular: turn = newValue * max_turn / 100. Esses dois métodos são criados fora do SysCall_init().
+
+```
+function onSpeedChange(uiHandle, id, newValue)
+    speed=newValue*max_speed/100
+    move(speed,turn)
+end
+function onTurnChange(uiHandle, id, newValue)
+    turn=newValue*max_turn/100
+    move(speed,turn)
+end
+```
+
+Para o Gripper, temos uma função para abrir e uma para fechar, além de outra função que alterna o estado da garra (aberta/fechada).
+
+```
+function onGripper()
+  if gripper_open then
+    closeGripper()
+    gripper_open=false
+  else
+    openGripper()
+    gripper_open=true
+  end
+end
+function openGripper()
+    sim.setJointTargetPosition(left_arm,30*math.pi/180)
+    sim.setJointTargetPosition(right_arm,-30*math.pi/180)
+end
+function closeGripper()
+    sim.setJointTargetPosition(left_arm,-10*math.pi/180)
+    sim.setJointTargetPosition(right_arm,10*math.pi/180)
+end
+```
+
+Agora temos um conjunto de funções que controlam diretamente a movimentação do robô, e serão adicionadas como botões na UI. moveForward() faz o robô andar com 505 da velocidade máxima para frente, moveBackwards() 505 para trás, turnLeft() faz o robô ficar girando à esquerda, turnRight() para a direita e stop() faz o robô para completamente. 
+
+```
+function moveForward()
+    sim.setJointTargetVelocity(left_wheel,0.5*max_speed/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,0.5*max_speed/wheel_radius)
+end
+function moveBackwards()
+    sim.setJointTargetVelocity(left_wheel,-0.5*max_speed/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,-0.5*max_speed/wheel_radius)
+end
+function turnLeft()
+    sim.setJointTargetVelocity(left_wheel,-0.5*max_speed/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,0.5*max_speed/wheel_radius)
+end
+function turnRight()
+    sim.setJointTargetVelocity(left_wheel,0.5*max_speed/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,-0.5*max_speed/wheel_radius)
+end
+function stop()
+    sim.setJointTargetVelocity(left_wheel,0)
+    sim.setJointTargetVelocity(right_wheel,0)
+end
+```
+
+Temos todas as funções necessárias, agora criaremos a UI. voltando à function sysCall_init(), faremos modificações. 'ui=simUI.create' faz a criação da UI e podemos agora adicionar botos com as funções que criamos anteriormente.
+
+```
+function sysCall_init()
+    -- do some initialization here
+    left_arm=sim.getObjectHandle('left_arm_joint')
+    right_arm=sim.getObjectHandle('right_arm_joint')
+    left_wheel=sim.getObjectHandle('left_joint')
+    right_wheel=sim.getObjectHandle('right_joint')
+    wheel_radius=0.03
+    max_speed=0.03
+    max_turn=0.3
+    speed=0
+    turn=0
+    b=0.0565
+    gripper_open=false
+    ui=simUI.create('<ui enabled="true" modal="false" title="DYOR" closeable="true" layout="vbox" placement="relative" position="20,20">' ..
+    '<label enabled="true" text="Linear Speed"></label>' ..
+    '<hslider enabled="true" minimum="-100" maximum="100" on-change="onSpeedChange"></hslider>' ..
+    '<label enabled="true" text="Angular Speed"></label>' ..
+    '<hslider enabled="true" minimum="-100" maximum="100" on-change="onTurnChange"></hslider>' ..
+    '<button enabled="true" text="Open/Close" checkable="true" on-click="onGripper"></button>' ..
+    '<button enabled="true" text="Forward" on-click="moveForward"></button>' ..
+    '<button enabled="true" text="Backwards" on-click="moveBackwards"></button>' ..
+    '<button enabled="true" text="Left" on-click="turnLeft"></button>' ..
+    '<button enabled="true" text="Right" on-click="turnRight"></button>' ..
+    '<button enabled="true" text="Stop" on-click="stop"></button>' ..
+    '</ui>')
+end
+```
+
+Aqui segue o código completo:
+
+```
+function onSpeedChange(uiHandle, id, newValue)
+    speed=newValue*max_speed/100
+    move(speed,turn)
+end
+function onTurnChange(uiHandle, id, newValue)
+    turn=newValue*max_turn/100
+    move(speed,turn)
+end
+function onGripper()
+  if gripper_open then
+    closeGripper()
+    gripper_open=false
+  else
+    openGripper()
+    gripper_open=true
+  end
+end
+function openGripper()
+    sim.setJointTargetPosition(left_arm,30*math.pi/180)
+    sim.setJointTargetPosition(right_arm,-30*math.pi/180)
+end
+function closeGripper()
+    sim.setJointTargetPosition(left_arm,-10*math.pi/180)
+    sim.setJointTargetPosition(right_arm,10*math.pi/180)
+end
+function move(v,w)
+    sim.setJointTargetVelocity(left_wheel,(v-b*w)/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,(v+b*w)/wheel_radius)
+end
+function moveForward()
+    sim.setJointTargetVelocity(left_wheel,0.5*max_speed/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,0.5*max_speed/wheel_radius)
+end
+function moveBackwards()
+    sim.setJointTargetVelocity(left_wheel,-0.5*max_speed/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,-0.5*max_speed/wheel_radius)
+end
+function turnLeft()
+    sim.setJointTargetVelocity(left_wheel,-0.5*max_speed/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,0.5*max_speed/wheel_radius)
+end
+function turnRight()
+    sim.setJointTargetVelocity(left_wheel,0.5*max_speed/wheel_radius)
+    sim.setJointTargetVelocity(right_wheel,-0.5*max_speed/wheel_radius)
+end
+function stop()
+    sim.setJointTargetVelocity(left_wheel,0)
+    sim.setJointTargetVelocity(right_wheel,0)
+end
+function sysCall_init()
+    -- do some initialization here
+    left_arm=sim.getObjectHandle('left_arm_joint')
+    right_arm=sim.getObjectHandle('right_arm_joint')
+    left_wheel=sim.getObjectHandle('left_joint')
+    right_wheel=sim.getObjectHandle('right_joint')
+    wheel_radius=0.03
+    max_speed=0.03
+    max_turn=0.3
+    speed=0
+    turn=0
+    b=0.0565
+    gripper_open=false
+    ui=simUI.create('<ui enabled="true" modal="false" title="DYOR" closeable="true" layout="vbox" placement="relative" position="20,20">' ..
+    '<label enabled="true" text="Linear Speed"></label>' ..
+    '<hslider enabled="true" minimum="-100" maximum="100" on-change="onSpeedChange"></hslider>' ..
+    '<label enabled="true" text="Angular Speed"></label>' ..
+    '<hslider enabled="true" minimum="-100" maximum="100" on-change="onTurnChange"></hslider>' ..
+    '<button enabled="true" text="Open/Close" checkable="true" on-click="onGripper"></button>' ..
+    '<button enabled="true" text="Forward" on-click="moveForward"></button>' ..
+    '<button enabled="true" text="Backwards" on-click="moveBackwards"></button>' ..
+    '<button enabled="true" text="Left" on-click="turnLeft"></button>' ..
+    '<button enabled="true" text="Right" on-click="turnRight"></button>' ..
+    '<button enabled="true" text="Stop" on-click="stop"></button>' ..
+    '</ui>')
+end
+function sysCall_actuation()
+    -- put your actuation code here
+end
+function sysCall_sensing()
+    -- put your sensing code here
+end
+function sysCall_cleanup()
+    -- do some clean-up here
+end
+```
