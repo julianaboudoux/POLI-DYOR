@@ -156,12 +156,20 @@ As joints dos braços devem ser colocadas no modo "position":
 
 ### 4. Hierarquia e configuração da massa de objetos (debugging massa). 
 
-Após a configuração das joints e dos objetos puros, iremos fazer a hierarquia de cena necessária para o funcionamento correto do nosso robô.
-Primeiro, vamos configurar as "caster wheel". Os objetos puros sempre estarão como "filho" da joint e o objeto original, como a seguir:
+Após a configuração das joints e dos objetos puros, iremos fazer a hierarquia de cena necessária para o funcionamento correto do nosso robô. Esse processo confirma
+a conexão entre o robô em si e todos os objetos/joints/objetos puros configurados anteriormente.
 
+Primeiro, vamos configurar as "caster wheel"s . Os objetos puros sempre estarão como "filho" da joint e o objeto original, como a seguir:
 
-![image](https://github.com/user-attachments/assets/a424c88b-48d2-4307-b9c7-c95ee5be794d)![image](https://github.com/user-attachments/assets/aa5f36e4-4026-4271-b0f2-77f5419c0c16)
+![image](https://github.com/user-attachments/assets/ace753e4-5a2a-43e7-8d1f-fc91cbe8fcd9)
 
+Em seguida, faremos o mesmo processo com os braços ("left_arm_joint" e "right_arm_joint").
+
+![image](https://github.com/user-attachments/assets/a65f88af-42a5-4828-8f3f-cc79124f93b9)
+
+Por fim, 
+
+![image](https://github.com/user-attachments/assets/2db4ef3a-d271-43aa-97ee-75ec0c809d5d)
 
 
 
