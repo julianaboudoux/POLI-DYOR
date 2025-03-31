@@ -159,7 +159,7 @@ As joints dos braços devem ser colocadas no modo "position":
 Após a configuração das joints e dos objetos puros, iremos fazer a hierarquia de cena necessária para o funcionamento correto do nosso robô. Esse processo confirma
 a conexão entre o robô em si e todos os objetos/joints/objetos puros configurados anteriormente.
 
-Primeiro, vamos configurar as "caster wheel"s . Os objetos puros sempre estarão como "filho" da joint e o objeto original, como a seguir:
+Primeiro, vamos configurar as "wheel"s laterais. Os objetos puros sempre estarão como "filho" da joint e o objeto original, como a seguir:
 
 ![image](https://github.com/user-attachments/assets/ace753e4-5a2a-43e7-8d1f-fc91cbe8fcd9)
 
@@ -167,14 +167,21 @@ Em seguida, faremos o mesmo processo com os braços ("left_arm_joint" e "right_a
 
 ![image](https://github.com/user-attachments/assets/a65f88af-42a5-4828-8f3f-cc79124f93b9)
 
-Por fim, 
+Por fim, as "caster wheel"s. Lembrando que,  "caster_joint" está conectando o "caster_support" à base do robô, e "caster_support" em si está conectado à roba em si, a "caster_wheel", a partir da joint "caster_wheel_joint". Veja a seguir
 
-![image](https://github.com/user-attachments/assets/2db4ef3a-d271-43aa-97ee-75ec0c809d5d)
+![image](https://github.com/user-attachments/assets/56a844ff-9755-4e53-a884-878b5a773c76)
 
-
+No final, sua hierarquia de cena deve estar parecido como abaixo:
 
 ![image](https://github.com/user-attachments/assets/84a0d9ab-7c3f-425c-bc61-8ee639a4ee7f)
 
+Para finalizar o tópico, iremos mudar a massa do "left_arm_pure", "left_arm_pure" e da "caster_wheel", pois o robô está pendendo para frente no momento, por causa da distribuição errada dos objetos. para "left_arm_pure" e "left_arm_pure", acesse as propriedades dinâmicas dos objetos, e em "Mass", coloque o valor '0.001438'.
+
+![image](https://github.com/user-attachments/assets/d57b71b0-f0ff-4840-8948-7d06db61c2b7)
+
+Já para a "caster_wheel" coloque o valor '0.1066'.
+
+![image](https://github.com/user-attachments/assets/e2d1289e-226d-4db9-b8a4-6905d3a52fb3)
 
 
 ### 5. Explicação do código do robô manual (incluíndo LED).
