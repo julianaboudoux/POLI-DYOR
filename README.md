@@ -589,3 +589,117 @@ end
 
 -- See the user manual or the available code snippets for additional callback functions and details
 ```
+### 6. Configuração de sensor de proximidade.
+
+- Primeiro devemos entender como utilizar a API no Coppelia para lidar com os dados do sensor.
+- Devemos entender como mudar a velocidade/ângulo das rodas com base na distância de obstáculos usando sensor(VL5310x)
+  
+Antes de tudo vamos adicionar um sensor a cena:
+
+![image](https://github.com/user-attachments/assets/d29931a3-6960-43b0-9874-cf4676cc3262)
+
+- São vários tipos de sensor, o que iremos usar nesse tutorial é o sensor de laser , que ficará entre os "olhos" do nosso robô.
+- Podemos colocar vários sensores no Robô se quisermos , por exemplo se quisermos colocar 1 sensor nos olhos , 4 nos braços(dois de cada lado), a hierarquia seria assim:
+  
+  ![image](https://github.com/user-attachments/assets/0b923167-b6c5-4205-8d1e-93108952a824)
+  
+  E o nosso robô teria essa aparência( o sensor de proximidade da imagem é cilindrico):
+  
+  ![image](https://github.com/user-attachments/assets/936a868d-b5c4-4fc9-b1db-d529e14466f1)
+
+depois de ter adicionado o sensor devemos configura-lo da maneira que acharmos ideal, para isso damos 2 cliques no sensor e selecionamos a opção : Volume Parameters
+
+![image](https://github.com/user-attachments/assets/edaa0155-55eb-41ab-8864-ee1d49def8d4)
+
+Em seguida mudamos algumas propriedades, como no exemplo:
+![image](https://github.com/user-attachments/assets/6d57a445-1213-4013-aa84-7df30ed4574c)
+
+PRONTO!! , estamos com o nosso sensor configurado e basta movê-lo pra onde acharmos melhor, no nosso caso , ele ficará entre os olhos do robô, como na imagem:
+
+![image](https://github.com/user-attachments/assets/af341c8b-7444-4e46-80bb-be144acbfb5e)
+
+- Entretanto nosso sensor ainda não estará funcionando , precisamos associar um script para isso!
+-  Primeiro criamos um Script sem Thread usando Lua( podem usar Python se preferir), como na imagem:
+  
+  ![image](https://github.com/user-attachments/assets/7b9071bc-b209-4681-a3fa-6f69425aff76)
+
+### 7. Explicação do código do robô com sensor de proximidade.
+
+1. Inicialização do Script
+
+Criamos a função sysCall_init() para inicializar os componentes do robô:
+
+```
+function sysCall_init()
+    sim = require('sim')
+
+    -- do some initialization here
+    front_sensor = sim.getObject('UltraSonicSensor') # aqui é nome do seu sensor de proximidade
+    
+    left_wheel = sim.getObject('LeftWheelJoint') # e aqui o nome da sua junta na roda esquerda
+    right_wheel = sim.getObject('RightWheelJoint') # e aqui o nome da sua junta na roda direita
+end
+```
+Explicação:
+
+- sim.getObject('/UltraSonicSensor'): Obtém o ID do sensor de proximidade.
+
+- sim.getObject('/LeftWheelJoint') e sim.getObject('/RightWheelJoint'): Obtêm os IDs das juntas das rodas.
+
+- print() ajuda a depurar e verificar se a inicialização ocorreu corretamente.
+  
+2. Leitura dos Dados do Sensor
+
+usamos a função sysCall_sensing() para capturar os dados do sensor de proximidade:
+
+```
+function sysCall_sensing()
+    -- put your sensing code here
+    detected, distance, point = sim.readProximitySensor(front_sensor) 
+    
+end
+```
+
+Cada variável representa um dado retornado pela função sim.readProximitySensor(), que faz parte da API do CoppeliaSim. Aqui está o significado de cada uma:
+
+- detected: Um valor booleano (True ou False) indicando se o sensor detectou um objeto.
+
+- distance: A distância entre o sensor e o objeto detectado, normalmente em metros.
+
+
+Se detected for False, distance pode ser um valor padrão (como float('inf')) e point pode ser None ou uma posição padrão.
+
+3. Movimentação do Robô
+
+Criamos a função sysCall_actuation() para controlar o movimento do robô com base na leitura do sensor.
+
+```
+function sysCall_actuation()
+    if detected == 0 then  -- Se não houver obstáculo
+        sim.setJointTargetVelocity(left_wheel, 3)   -- Move para frente
+        sim.setJointTargetVelocity(right_wheel, 3)  
+    else  -- Se houver obstáculo
+        if point ~= nil then  -- Se houver ponto de detecção
+            if point[1] <= 0 then  -- Objeto à esquerda
+                sim.setJointTargetVelocity(left_wheel, 0)  -- Vira à direita
+                sim.setJointTargetVelocity(right_wheel, 3)
+            else  -- Objeto à direita
+                sim.setJointTargetVelocity(left_wheel, 3)
+                sim.setJointTargetVelocity(right_wheel, 0) -- Vira à esquerda
+            end
+            print(string.format("Desviando de obstaculo detectado em x = %.2f", point[1]))
+        else
+            print("Nenhuma informacao sobre a posicao do obstaculo.")
+        end
+    end
+end
+```
+Explicação:
+
+- Se detected == 0, não há obstáculo, e o robô continua em linha reta.
+
+- Se detected == 1 e point não for nil:
+
+- Se point[1] <= 0 (obstáculo à esquerda), gira para a direita.
+
+- Se point[1] > 0 (obstáculo à direita), gira para a esquerda.
